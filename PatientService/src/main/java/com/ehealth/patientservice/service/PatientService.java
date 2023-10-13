@@ -4,6 +4,7 @@ import com.ehealth.patientservice.data.PatientRepository;
 import com.ehealth.patientservice.data.PersonRepository;
 import com.ehealth.patientservice.model.Patient;
 import com.ehealth.patientservice.model.Person;
+import com.ehealth.patientservice.model.Vitals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,21 @@ public class PatientService {
         personRepo.save(person);
 
         return patient;
+    }
 
+    public Patient updatePatient(Patient patient) {
+        patientRepo.save(patient);
+        return patient;
+    }
+
+    public Patient deletePatient(Patient patient) {
+        patientRepo.delete(patient);
+        return patient;
+    }
+
+    public Vitals addVitalsToPatient(Patient patient, Vitals vitals) {
+
+        return vitals;
     }
 
 }

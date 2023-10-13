@@ -42,6 +42,10 @@ public class Patient extends Person {
     private List<MedicationAdministration> medicationAdministrationList;
 
 
+    public void addVitalsToPatient(Vitals vitals) {
+
+    }
+
 
 
 
