@@ -5,10 +5,10 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: "patientroot"
-      POSTGRES_PASSWORD: "secret"
-      POSTGRES_DB: "patientdb"
-    volumes:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "patientdb_dev"
+    #volumes:
 
     networks:
       backend:
@@ -16,18 +16,18 @@ services:
           - "patientdb"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
+      interval: 12s
       timeout: 5s
       retries: 5
   configserver:
-    image:
+    image: ehealth/configserver
     healthcheck:
       test: exit 0
       interval: 15s
       timeout: 3s
       retries: 10
     ports:
-      - "8089:8089"
+      - "8888:8888"
     environment:
       ENCRYPT_KEY: "fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo"
       server.port: "8888"
@@ -36,20 +36,21 @@ services:
         aliases:
           - "configserver"
   patientservice:
-    image:
+    image: ehealth/patientservice
     environment:
       PROFILE: "dev"
       CONFIGSERVER_URI: "http://configserver:8888/"
       CONFIGSERVER_PORT:   "8888"
       DATABASESERVER_PORT: "5432"
       ENCRYPT_KEY: "IMSYMMETRIC"
+      PATIENTSERVICE_PORT: "8081"
     depends_on:
-      database:
+      patientdb:
         condition: service_healthy
       configserver:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "8081:8081"
     networks:
       - backend
 

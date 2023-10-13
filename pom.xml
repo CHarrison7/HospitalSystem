@@ -2,14 +2,14 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>HospitalSystem</groupId>
+    <groupId>eHealth</groupId>
     <version>0.0.1-SNAPSHOT</version>
-    <artifactId>hospitalsystem-parent-pom</artifactId>
+    <artifactId>eHealth-parent-pom</artifactId>
     <packaging>pom</packaging>
 
 
-    <name>hospitalsystem-parent-pom</name>
-    <description>Parent Pom for the Hospital System project</description>
+    <name>eHealth-parent-pom</name>
+    <description>Parent Pom for the eHealth System project</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -19,7 +19,7 @@
     </parent>
 
     <properties>
-        <docker.image.prefix>hospitalsystem</docker.image.prefix>
+        <docker.image.prefix>ehealth</docker.image.prefix>
     </properties>
 
     <modules>

@@ -1,10 +1,10 @@
-package com.optimagrowth.configserver;
+package com.ehealth.patientservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigurationServerApplicationTests {
+class PatientServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

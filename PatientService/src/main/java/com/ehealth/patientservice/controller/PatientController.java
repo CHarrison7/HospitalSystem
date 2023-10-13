@@ -1,7 +1,7 @@
-package HospitalSystem.PatientService.controller;
+package com.ehealth.patientservice.controller;
 
-import HospitalSystem.PatientService.model.Patient;
-import HospitalSystem.PatientService.service.PatientService;
+import com.ehealth.patientservice.model.Patient;
+import com.ehealth.patientservice.service.PatientService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
