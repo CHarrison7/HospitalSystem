@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/vitals")
 public class VitalsController {
@@ -18,5 +20,10 @@ public class VitalsController {
     @GetMapping
     public Vitals getVitals(@PathVariable Long vitalsId) {
         return vitalsService.getVitals(vitalsId).get();
+    }
+
+    @GetMapping("/all")
+    public List<Vitals> getVitals() {
+        return vitalsService.getAll();
     }
 }

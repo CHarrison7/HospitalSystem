@@ -20,9 +20,14 @@ public class MedicationAdministrationController {
         this.medicationAdministrationService = medicationAdministrationService;
     }
 
-    @GetMapping
+    @GetMapping(value ="/all")
     public List<MedicationAdministration> getAll() {
         return medicationAdministrationService.getAll();
+    }
+
+    @GetMapping
+    public MedicationAdministration getMedicationAdministration(Long medAdminId) {
+        return medicationAdministrationService.getMedicationAdministration(medAdminId);
     }
 
 }

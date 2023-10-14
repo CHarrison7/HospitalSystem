@@ -42,8 +42,14 @@ public class Patient extends Person {
     private List<MedicationAdministration> medicationAdministrationList;
 
 
-    public void addVitalsToPatient(Vitals vitals) {
+    public List<Vitals> addVitalsToPatient(Vitals vitals) {
+        vitalsList.add(vitals);
+        return vitalsList;
+    }
 
+    public List<MedicationAdministration> addMedicationAdministrationToPatient(MedicationAdministration medicationAdministration) {
+        medicationAdministrationList.add(medicationAdministration);
+        return medicationAdministrationList;
     }
 
 
