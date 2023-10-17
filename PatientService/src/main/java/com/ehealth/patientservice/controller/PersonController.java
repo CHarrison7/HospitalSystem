@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/person")
 public class PersonController {
@@ -22,6 +24,11 @@ public class PersonController {
     public Person createPerson(Person person) {
         personService.createPerson(person);
         return person;
+    }
+
+    @GetMapping(value = "/all")
+    public List<Person> getAllPersons() {
+        return personService.getAllPersons();
     }
 
     @DeleteMapping

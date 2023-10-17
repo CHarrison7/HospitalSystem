@@ -2,12 +2,12 @@ spring:
   application:
     name: patientservice
   profiles:
-    active: test
-  #active: ${PROFILE}
+    #active: test
+    active: ${PROFILE}
   cloud:
     config:
-      #uri: http://configserver:8888
-      uri: http://localhost:8888
+      uri: http://configserver:8888
+      #uri: http://localhost:8888
 server:
   port: 8081
 

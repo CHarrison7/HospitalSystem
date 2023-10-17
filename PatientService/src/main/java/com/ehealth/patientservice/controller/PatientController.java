@@ -28,12 +28,12 @@ public class PatientController {
         return ResponseEntity.ok(patientService.createPatient(patient));
     }
 
-    @PutMapping
-    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient) {
-        return ResponseEntity.ok(patientService.updatePatient(patient));
+    @PutMapping(value = "/{patientId}")
+    public ResponseEntity<Patient> updatePatient(@PathVariable Long patientId, @RequestBody Patient patient) {
+        return ResponseEntity.ok(patientService.updatePatient(patientId, patient));
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/{patientId}")
     public ResponseEntity deletePatient(@PathVariable Long patientId) {
         return ResponseEntity.ok(patientService.deletePatient(patientId));
     }

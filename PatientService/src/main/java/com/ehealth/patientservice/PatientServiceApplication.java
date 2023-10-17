@@ -16,12 +16,5 @@ public class PatientServiceApplication {
 		SpringApplication.run(PatientServiceApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(PatientRepository patientRepo) {
-		Patient p = new Patient();
-		p.setFirstName("Caleb");
-		p.setLastName("Harrison");
-		return args -> patientRepo.save(p);
-	}
 
 }

@@ -6,7 +6,6 @@ import com.ehealth.patientservice.data.PersonRepository;
 import com.ehealth.patientservice.data.VitalsRepository;
 import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
-import com.ehealth.patientservice.model.Person;
 import com.ehealth.patientservice.model.Vitals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,24 +37,15 @@ public class PatientService {
     }
 
     public Patient createPatient(Patient patient)  {
-        Person person = new Person();
-        person.setFirstName(patient.getFirstName());
-        person.setLastName(patient.getLastName());
-        person.setPhoneNumber(patient.getPhoneNumber());
-        personService.createPerson(person);
         patientRepo.save(patient);
-
-        person.setPatientId(patient.getPatientId());
-        person.setIsPatient(true);
-
-        personRepo.save(person);
-
         return patient;
     }
 
-    public Patient updatePatient(Patient patient) {
-        patientRepo.save(patient);
-        return patient;
+    public Patient updatePatient(Long patientId, Patient patient) {
+        Patient old = patientRepo.findById(patientId).get();
+        old = patient;
+        patientRepo.save(old);
+        return old;
     }
 
     public String deletePatient(Long patientId) {

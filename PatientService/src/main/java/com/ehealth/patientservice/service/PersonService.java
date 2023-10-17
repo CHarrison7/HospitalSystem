@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PersonService {
 
@@ -24,5 +26,9 @@ public class PersonService {
     public String deletePerson(Long personId) {
         personRepo.delete(personRepo.findById(personId).get());
         return "Person deleted!";
+    }
+
+    public List<Person> getAllPersons() {
+        return personRepo.findAll();
     }
 }

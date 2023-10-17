@@ -8,10 +8,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity @Data @AllArgsConstructor @NoArgsConstructor
-public class Patient extends Person {
+public class Patient {
     @Id
     @GeneratedValue
     private Long id;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
     private Date dob;
 
     @Transient
@@ -32,8 +35,10 @@ public class Patient extends Person {
     @Transient
     private List<String> diagnosis;
 
-    @OneToOne
-    private Person emergencyContact;
+    //@OneToOne(cascade = CascadeType.PERSIST)
+    //private Person emergencyContact;
+
+    //private Long emergencyContactPersonId;
 
     @OneToMany
     private List<Vitals> vitalsList;

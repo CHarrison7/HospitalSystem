@@ -17,8 +17,9 @@ public class Person {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private boolean isPatient = false;
-    private Long patientId = null;
+    private boolean isPatient;
+    @GeneratedValue
+    private Long patientId;
 
     public void setIsPatient(boolean b) {
         this.isPatient = b;
