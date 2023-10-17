@@ -5,6 +5,7 @@ import com.ehealth.patientservice.model.Patient;
 import com.ehealth.patientservice.service.MedicationAdministrationService;
 import com.ehealth.patientservice.service.PatientService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class MedicationAdministrationController {
     }
 
     @GetMapping
-    public MedicationAdministration getMedicationAdministration(Long medAdminId) {
+    public MedicationAdministration getMedicationAdministration(@PathVariable Long medAdminId) {
         return medicationAdministrationService.getMedicationAdministration(medAdminId);
     }
 
