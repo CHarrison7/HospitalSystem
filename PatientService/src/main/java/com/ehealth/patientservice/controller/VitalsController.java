@@ -1,12 +1,10 @@
 package com.ehealth.patientservice.controller;
 
 import com.ehealth.patientservice.model.Vitals;
+import com.ehealth.patientservice.service.PatientService;
 import com.ehealth.patientservice.service.VitalsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,14 +14,32 @@ public class VitalsController {
 
     @Autowired
     private VitalsService vitalsService;
+    @Autowired
+    private PatientService patientService;
 
-    @GetMapping
+    @GetMapping(value = "/{vitalsId}")
     public Vitals getVitals(@PathVariable Long vitalsId) {
         return vitalsService.getVitals(vitalsId).get();
     }
 
     @GetMapping("/all")
-    public List<Vitals> getVitals() {
+    public List<Vitals> getAllVitals() {
         return vitalsService.getAll();
+    }
+
+    @PutMapping(value = "/{vitalsId}")
+    public Vitals updateVitalsById(@PathVariable Long vitalsId, @RequestBody Vitals vitals) {
+        return vitalsService.updateVitals(vitalsId, vitals);
+    }
+
+    @DeleteMapping(value = "/{vitalsId}")
+    public String deleteVitals(@PathVariable Long vitalsId) {
+
+        Vitals v =  vitalsService.getVitals(vitalsId).get();
+        Long patientIdForVitals = v.getPatientId();
+        patientService.deleteVitalsFromPatient(vitalsId, patientIdForVitals);
+        vitalsService.deleteVitals(vitalsId);
+
+        return "Vitals with vitalsId " + vitalsId + " removed from patient with patientId " + patientIdForVitals + " and deleted from VitalsRepo!";
     }
 }

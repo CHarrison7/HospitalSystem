@@ -4,10 +4,7 @@ import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
 import com.ehealth.patientservice.service.MedicationAdministrationService;
 import com.ehealth.patientservice.service.PatientService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,9 +13,11 @@ import java.util.List;
 public class MedicationAdministrationController {
 
     private final MedicationAdministrationService medicationAdministrationService;
+    private final PatientService patientService;
 
-    public MedicationAdministrationController(MedicationAdministrationService medicationAdministrationService) {
+    public MedicationAdministrationController(MedicationAdministrationService medicationAdministrationService, PatientService patientService) {
         this.medicationAdministrationService = medicationAdministrationService;
+        this.patientService = patientService;
     }
 
     @GetMapping(value ="/all")
@@ -26,9 +25,24 @@ public class MedicationAdministrationController {
         return medicationAdministrationService.getAll();
     }
 
-    @GetMapping
+    @GetMapping(value = "/{medAdminId}")
     public MedicationAdministration getMedicationAdministration(@PathVariable Long medAdminId) {
         return medicationAdministrationService.getMedicationAdministration(medAdminId);
+    }
+
+    @PutMapping(value = "/{medAdminId}")
+    public MedicationAdministration updateMedAdminById(@PathVariable Long medAdminId, @RequestBody MedicationAdministration medAdmin) {
+        return medicationAdministrationService.updateMedicationAdministration(medAdminId, medAdmin);
+    }
+
+    @DeleteMapping(value =  "/{medAdminId}")
+    public String deleteMedicationAdministration(@PathVariable Long medAdminId) {
+        MedicationAdministration ma  = medicationAdministrationService.getMedicationAdministration(medAdminId);
+        Long patientIdForMedAdmin = ma.getPatientId();
+        patientService.deleteMedicationAdministrationFromPatient(medAdminId, patientIdForMedAdmin);
+        medicationAdministrationService.deleteMedicationAdministration(medAdminId);
+
+        return "MedicationAdministration with medAdminId " + medAdminId + " removed from patient with patientId " + patientIdForMedAdmin + " and deleted from MedicationAdministrationRepo!";
     }
 
 }

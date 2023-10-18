@@ -3,7 +3,6 @@ package com.ehealth.patientservice.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,28 +16,35 @@ public class Patient {
     private String phoneNumber;
     private Date dob;
 
-    @Transient
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "knownConditions", joinColumns = @JoinColumn(name = "patient_id"))
+    @Column(name = "condition", nullable = false)
     private List<String> knownConditions;
 
-    @Transient
-    private List<String> medications;
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "prescribedMedications", joinColumns = @JoinColumn(name = "patient_id"))
+    @Column(name = "medication", nullable = false)
+    private List<String> prescribedMedications;
 
-    @Transient
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "regularMedications", joinColumns = @JoinColumn(name = "patient_id"))
+    @Column(name = "regularMedication", nullable = false)
     private List<String> regularMedications;
 
-    @Transient
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "allergies", joinColumns = @JoinColumn(name = "patient_id"))
+    @Column(name = "allergy", nullable = false)
     private List<String> allergies;
 
-    @Transient
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "pastProcedures", joinColumns = @JoinColumn(name = "patient_id"))
+    @Column(name = "procedure", nullable = false)
     private List<String> pastProcedures;
 
-    @Transient
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "diagnosis", joinColumns = @JoinColumn(name = "patient_id"))
+    @Column(name = "diagnosis", nullable = false)
     private List<String> diagnosis;
-
-    //@OneToOne(cascade = CascadeType.PERSIST)
-    //private Person emergencyContact;
-
-    //private Long emergencyContactPersonId;
 
     @OneToMany
     private List<Vitals> vitalsList;

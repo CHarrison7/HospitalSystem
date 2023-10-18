@@ -2,7 +2,6 @@ package com.ehealth.patientservice.service;
 
 import com.ehealth.patientservice.data.MedicationAdministrationRepository;
 import com.ehealth.patientservice.data.PatientRepository;
-import com.ehealth.patientservice.data.PersonRepository;
 import com.ehealth.patientservice.data.VitalsRepository;
 import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
@@ -10,6 +9,9 @@ import com.ehealth.patientservice.model.Vitals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,20 +19,25 @@ public class PatientService {
 
     @Autowired
     private static PatientRepository patientRepo;
-    @Autowired
-    private static PersonRepository personRepo;
-    @Autowired
-    private static PersonService personService;
+
     @Autowired
     private static MedicationAdministrationRepository medicationAdministrationRepository;
     @Autowired
     private static MedicationAdministrationService medicationAdministationService;
     @Autowired
-    private static VitalsService viralsService;
+    private static VitalsService vitalsService;
     @Autowired
     private static VitalsRepository vitalsRepository;
 
-    public PatientService(PatientRepository patientRepo) { this.patientRepo = patientRepo; }
+
+    public PatientService(PatientRepository patientRepo, MedicationAdministrationService medicationAdministrationService, VitalsService vitalsService,
+                          MedicationAdministrationRepository medicationAdministrationRepository, VitalsRepository vitalsRepository) {
+        this.patientRepo = patientRepo;
+        this.medicationAdministationService = medicationAdministrationService;
+        this.vitalsService = vitalsService;
+        this.medicationAdministrationRepository = medicationAdministrationRepository;
+        this.vitalsRepository =  vitalsRepository;
+    }
 
     public List<Patient> getAllPatients() {
         return patientRepo.findAll();
@@ -43,7 +50,21 @@ public class PatientService {
 
     public Patient updatePatient(Long patientId, Patient patient) {
         Patient old = patientRepo.findById(patientId).get();
-        old = patient;
+
+        // don't know how to quickly/easily update any changed attributes, so i will manually do it for all attributes
+        old.setAllergies(patient.getAllergies());
+        old.setDob(patient.getDob());
+        old.setDiagnosis(patient.getDiagnosis());
+        old.setLastName(patient.getLastName());
+        old.setFirstName(patient.getFirstName());
+        old.setPastProcedures(patient.getPastProcedures());
+        old.setPhoneNumber(patient.getPhoneNumber());
+        old.setKnownConditions(patient.getKnownConditions());
+        old.setPrescribedMedications(patient.getPrescribedMedications());
+        old.setMedicationAdministrationList(patient.getMedicationAdministrationList());
+        old.setRegularMedications(patient.getRegularMedications());
+        old.setVitalsList(patient.getVitalsList());
+
         patientRepo.save(old);
         return old;
     }
@@ -55,7 +76,20 @@ public class PatientService {
 
     public List<Vitals> addVitalsToPatient(Long patientId, Vitals vitals) {
         Patient patient = patientRepo.findById(patientId).get();
+        vitals.setTimeTaken(Date.from(Instant.now()));
+        vitals.setPatientId(patientId);
+        vitalsRepository.save(vitals);
         List<Vitals> ret = patient.addVitalsToPatient(vitals);
+        patientRepo.save(patient);
+        return ret;
+    }
+
+    public List<MedicationAdministration> addMedicationAdministrationToPatient(Long patientId, MedicationAdministration medAdmin){
+        Patient patient = patientRepo.findById(patientId).get();
+        medAdmin.setAdministrationTime(Date.from(Instant.now()));
+        medAdmin.setPatientId(patientId);
+        medicationAdministrationRepository.save(medAdmin);
+        List<MedicationAdministration> ret  = patient.addMedicationAdministrationToPatient(medAdmin);
         patientRepo.save(patient);
         return ret;
     }
@@ -77,16 +111,14 @@ public class PatientService {
         Patient patient = patientRepo.findById(patientId).get();
         patient.getMedicationAdministrationList().remove(medAdmin);
         patientRepo.save(patient);
-        medicationAdministrationRepository.delete(medAdmin);
         return "Medication Administration with medicationAdministrationId " + medicationAdministrationId + " deleted from Patient with patientId " + patientId + "!";
     }
 
     public String deleteVitalsFromPatient(Long vitalsId, Long patientId) {
-        Vitals vitals = viralsService.getVitals(vitalsId).get();
+        Vitals vitals = vitalsService.getVitals(vitalsId).get();
         Patient patient = patientRepo.findById(patientId).get();
         patient.getVitalsList().remove(vitals);
         patientRepo.save(patient);
-        vitalsRepository.delete(vitals);
         return "Vitals with vitalsId " + vitalsId + " deleted from Patient with patientId " + patientId + "!";
     }
 
