@@ -5,12 +5,9 @@
 - added Eureka service discovery
 - added cross-service communication via Netflix Feign Client
 
-## Read Me:
-
 GitHub: https://github.com/CHarrison7/HospitalSystem --> Use MASTER branch!
 
 Config Service GitHub: https://github.com/CHarrison7/configrepo/
-
 
 Steps to run:
 
@@ -23,6 +20,7 @@ Steps to run:
 7. run docker-compose up
 
 Make sure above commands are run at project root
+
 
 
 # Checkpoint 1:
