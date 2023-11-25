@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    #active: test
+    active: ${PROFILE}
+  cloud:
+    config:
+      uri: http://configserver:8888
+      #uri: http://localhost:8888
+    loadbalancer:
+      ribbon:
+        enabled: false
+#server:
+#  port: 8070

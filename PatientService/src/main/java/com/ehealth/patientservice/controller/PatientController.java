@@ -31,6 +31,7 @@ public class PatientController {
 
     @PostMapping
     public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
+       // this also calls BillingService's "createInvoiceForPatient" controller method too
         return ResponseEntity.ok(patientService.createPatient(patient));
     }
 
@@ -51,6 +52,7 @@ public class PatientController {
 
     @PostMapping(value = "/addmedicationadministration/{patientId}")
     public ResponseEntity addMedicationAdministrationToPatient(@PathVariable Long patientId, @RequestBody MedicationAdministration medAdmin) {
+        // this also calls the BillingService's updateInvoiceToAddServiceAndCost controller method
         return ResponseEntity.ok(patientService.addMedicationAdministrationToPatient(patientId, medAdmin));
     }
 

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: billingservice
+  profiles:
+    #active: test
+    active: ${PROFILE}
+  cloud:
+    config:
+      uri: http://configserver:8888
+      #uri: http://localhost:8888
+server:
+  port: 8082
+
+
