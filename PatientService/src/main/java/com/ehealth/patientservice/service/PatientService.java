@@ -3,9 +3,11 @@ package com.ehealth.patientservice.service;
 import com.ehealth.patientservice.data.MedicationAdministrationRepository;
 import com.ehealth.patientservice.data.PatientRepository;
 import com.ehealth.patientservice.data.VitalsRepository;
+import com.ehealth.patientservice.model.Invoice;
 import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
 import com.ehealth.patientservice.model.Vitals;
+import com.ehealth.patientservice.service.client.InvoiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,9 @@ public class PatientService {
     @Autowired
     private static VitalsRepository vitalsRepository;
 
+    @Autowired
+    InvoiceFeignClient invoiceFeignClient;
+
 
     public PatientService(PatientRepository patientRepo, MedicationAdministrationService medicationAdministrationService, VitalsService vitalsService,
                           MedicationAdministrationRepository medicationAdministrationRepository, VitalsRepository vitalsRepository) {
@@ -45,6 +50,8 @@ public class PatientService {
 
     public Patient createPatient(Patient patient)  {
         patientRepo.save(patient);
+        Invoice invoice = invoiceFeignClient.createInvoiceWithPatientId(patient.getId());
+        System.out.println(invoice.toString());
         return patient;
     }
 
@@ -91,6 +98,12 @@ public class PatientService {
         medicationAdministrationRepository.save(medAdmin);
         List<MedicationAdministration> ret  = patient.addMedicationAdministrationToPatient(medAdmin);
         patientRepo.save(patient);
+
+        Invoice invoice = invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
+        System.out.println(invoice.toString());
+
+        //invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
+
         return ret;
     }
 

@@ -25,6 +25,8 @@
     <modules>
         <module>configserver</module>
         <module>patientservice</module>
+        <module>billingservice</module>
+        <module>eurekaserver</module>
     </modules>
     <build>
         <plugins>

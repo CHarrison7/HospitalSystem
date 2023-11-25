@@ -35,6 +35,26 @@ services:
       backend:
         aliases:
           - "configserver"
+  eurekaserver:
+    image: ehealth/eurekaserver
+    environment:
+      - "SPRING_PROFILES_ACTIVE=standalone"
+    ports:
+      - "8070:8070"
+    depends_on:
+      patientdb:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    networks:
+      backend:
+        aliases:
+          - "eurekaserver"
+    healthcheck:
+      test: exit 0
+      interval: 10s
+      timeout: 5s
+      retries: 5
   patientservice:
     image: ehealth/patientservice
     environment:
@@ -53,7 +73,24 @@ services:
       - "8081:8081"
     networks:
       - backend
-
+  billingservice:
+    image: ehealth/billingservice
+    environment:
+      PROFILE: "dev"
+      CONFIGSERVER_URI: "http://configserver:8888/"
+      CONFIGSERVER_PORT: "8888"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY: "IMSYMMETRIC"
+      BILLINGSERVICE_PORT: "8082"
+    depends_on:
+      patientdb:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    networks:
+      - backend
 networks:
   backend:
     driver: bridge
