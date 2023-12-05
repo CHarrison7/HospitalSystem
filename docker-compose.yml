@@ -55,6 +55,29 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  gatewayserver:
+    image: ehealth/gatewayserver
+    container_name: gateway
+    ports:
+      - "8072:8072"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8072"
+      CONFIGSERVER_URI: "http://configserver:8071"
+      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      CONFIGSERVER_PORT: "8071"
+    depends_on:
+      patientdb:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    networks:
+      backend:
+        aliases:
+          - "gateway"
   patientservice:
     image: ehealth/patientservice
     environment:
@@ -68,6 +91,8 @@ services:
       patientdb:
         condition: service_healthy
       configserver:
+        condition: service_healthy
+      eurekaserver:
         condition: service_healthy
     ports:
       - "8081:8081"
@@ -87,10 +112,13 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     ports:
       - "8082:8082"
     networks:
       - backend
+
 networks:
   backend:
     driver: bridge
