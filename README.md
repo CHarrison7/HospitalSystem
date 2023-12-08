@@ -28,8 +28,8 @@ Steps to run:
 -Make sure above commands are run at project root
 -See ./docs for deployment diagram that shows port numbers for each service, in case you wish to access Zipkin backend
 
-====================================================================
-====================================================================
+==========
+==========
 
 # Checkpoint 2:
 - added Billing Service
@@ -53,8 +53,8 @@ Steps to run:
 Make sure above commands are run at project root
 
 
-====================================================================
-====================================================================
+==========
+==========
 
 # Checkpoint 1:
 1. Clone master (.idea folder not needed)
