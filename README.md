@@ -2,11 +2,11 @@
 
 # Checkpoint 3:
 
--added api gateway
--added kafka for messaging
--added serviceAdministeredEvent model for use with Kafka messaging
--added Zipkin and Micrometer for tracing
--partial deployment to Amazon AWS...RDS/EKS/ECS created, docker images pushed, but non-functional and wasn't able to demonstrate
+- added api gateway
+- added kafka for messaging
+- added serviceAdministeredEvent model for use with Kafka messaging
+- added Zipkin and Micrometer for tracing
+- partial deployment to Amazon AWS...RDS/EKS/ECS created, docker images pushed, but non-functional and wasn't able to demonstrate
 
 * Was unable to get Security to work
 
@@ -28,8 +28,8 @@ Steps to run:
 -Make sure above commands are run at project root
 -See ./docs for deployment diagram that shows port numbers for each service, in case you wish to access Zipkin backend
 
-==========
-==========
+===============
+===============
 
 # Checkpoint 2:
 - added Billing Service
@@ -53,8 +53,8 @@ Steps to run:
 Make sure above commands are run at project root
 
 
-==========
-==========
+===============
+===============
 
 # Checkpoint 1:
 1. Clone master (.idea folder not needed)
