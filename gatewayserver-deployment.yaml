@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-prod.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gatewayserver
+  name: gatewayserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: gatewayserver
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-prod.yml
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/hospitalsystem-backend: "true"
+        io.kompose.service: gatewayserver
+    spec:
+      containers:
+        - env:
+            - name: CONFIGSERVER_PORT
+              value: "8071"
+            - name: CONFIGSERVER_URI
+              value: http://configserver:8071
+            - name: EUREKASERVER_PORT
+              value: "8070"
+            - name: EUREKASERVER_URI
+              value: http://eurekaserver:8070/eureka/
+            - name: PROFILE
+              value: prod
+            - name: SERVER_PORT
+              value: "8072"
+          image: ehealth/gatewayserver
+          name: gateway
+          ports:
+            - containerPort: 8072
+              hostPort: 8072
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

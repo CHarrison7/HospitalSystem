@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-prod.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: configserver
+  name: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: configserver
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-prod.yml
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/hospitalsystem-backend: "true"
+        io.kompose.service: configserver
+    spec:
+      containers:
+        - env:
+            - name: ENCRYPT_KEY
+              value: fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo
+            - name: server.port
+              value: "8888"
+          image: ehealth/configserver
+          livenessProbe:
+            exec:
+              command:
+                - exit 0
+            failureThreshold: 10
+            periodSeconds: 25
+            timeoutSeconds: 3
+          name: configserver
+          ports:
+            - containerPort: 8888
+              hostPort: 8888
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

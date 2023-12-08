@@ -12,6 +12,9 @@ server:
   port: 8081
 
 resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
   instances:
     licenseService:
       registerHealthIndicator: true

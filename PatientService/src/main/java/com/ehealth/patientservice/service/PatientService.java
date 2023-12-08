@@ -3,6 +3,7 @@ package com.ehealth.patientservice.service;
 import com.ehealth.patientservice.data.MedicationAdministrationRepository;
 import com.ehealth.patientservice.data.PatientRepository;
 import com.ehealth.patientservice.data.VitalsRepository;
+import com.ehealth.patientservice.event.ServiceAdministeredEvent;
 import com.ehealth.patientservice.model.Invoice;
 import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
@@ -12,6 +13,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -36,6 +38,9 @@ public class PatientService {
     private static VitalsService vitalsService;
     @Autowired
     private static VitalsRepository vitalsRepository;
+
+    @Autowired
+    private KafkaTemplate<String, ServiceAdministeredEvent> ServiceAdministeredKafkaTemplate;
 
     @Autowired
     InvoiceFeignClient invoiceFeignClient;
@@ -110,8 +115,15 @@ public class PatientService {
         List<MedicationAdministration> ret  = patient.addMedicationAdministrationToPatient(medAdmin);
         patientRepo.save(patient);
 
-        Invoice invoice = invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
-        System.out.println(invoice.toString());
+        //Invoice invoice = invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
+
+        ServiceAdministeredEvent serviceAdministeredEvent = new ServiceAdministeredEvent();
+        serviceAdministeredEvent.setPatientId(patientId);
+        serviceAdministeredEvent.setServiceCost(100);
+        serviceAdministeredEvent.setServiceDescription("Medicine: " + medAdmin.getMedication() + " ; dosage: " + medAdmin.getDosage());
+
+        ServiceAdministeredKafkaTemplate.send("serviceAdministeredTopic", serviceAdministeredEvent);
+
 
         //invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
 

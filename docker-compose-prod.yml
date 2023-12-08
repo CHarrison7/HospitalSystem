@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "patientdb_dev"
+      POSTGRES_DB: "patientdb_prod"
     #volumes:
 
     networks:
@@ -40,7 +40,7 @@ services:
   eurekaserver:
     image: ehealth/eurekaserver
     environment:
-      - "SPRING_PROFILES_ACTIVE=standalone"
+      - "SPRING_PROFILES_ACTIVE=standaloneprod"
     ports:
       - "8070:8070"
     depends_on:
@@ -63,7 +63,7 @@ services:
     ports:
       - "8072:8072"
     environment:
-      PROFILE: "default"
+      PROFILE: "prod"
       SERVER_PORT: "8072"
       CONFIGSERVER_URI: "http://configserver:8071"
       EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
@@ -83,7 +83,7 @@ services:
   patientservice:
     image: ehealth/patientservice
     environment:
-      PROFILE: "dev"
+      PROFILE: "prod"
       CONFIGSERVER_URI: "http://configserver:8888/"
       CONFIGSERVER_PORT:   "8888"
       DATABASESERVER_PORT: "5432"
@@ -103,7 +103,7 @@ services:
   billingservice:
     image: ehealth/billingservice
     environment:
-      PROFILE: "dev"
+      PROFILE: "prod"
       CONFIGSERVER_URI: "http://configserver:8888/"
       CONFIGSERVER_PORT: "8888"
       DATABASESERVER_PORT: "5432"
