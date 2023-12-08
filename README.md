@@ -1,6 +1,6 @@
 # HospitalSystem
 
-#Checkpoint 3:
+# Checkpoint 3:
 
 -added api gateway
 -added kafka for messaging
