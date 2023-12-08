@@ -16,7 +16,7 @@ Config Service GitHub: https://github.com/CHarrison7/configrepo/
 ---------------------------
 Steps to run:
 
-1. Clone master (.idea folder and Kubernetes-relate .yaml files not needed)
+1. Clone master brance (.idea folder and Kubernetes-relate .yaml files not needed)
 2. run mvn clean package -Dmaven.test.skip=true
 3. run docker build -t ehealth/patientservice ./patientservice
 4. run docker build -t ehealth/billingservice ./billingserver
@@ -25,8 +25,8 @@ Steps to run:
 7. Run docker build -t ehealth/gatewayserver ./gatewayserver
 8. run docker-compose up
 
--Make sure above commands are run at project root
--See ./docs for deployment diagram that shows port numbers for each service, in case you wish to access Zipkin backend
+- Make sure above commands are run at project root
+- See ./docs for deployment diagram that shows port numbers for each service, in case you wish to access Zipkin backend
 
 ===============
 ===============
