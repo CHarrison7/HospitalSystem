@@ -4,10 +4,12 @@ import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
 import com.ehealth.patientservice.model.Vitals;
 import com.ehealth.patientservice.service.PatientService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping(value = "/api/patients")
@@ -18,6 +20,7 @@ public class PatientController {
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
+
 
     @GetMapping(value = "/all")
     public List<Patient> getAllPatients() {
@@ -56,5 +59,9 @@ public class PatientController {
         return ResponseEntity.ok(patientService.addMedicationAdministrationToPatient(patientId, medAdmin));
     }
 
+    @GetMapping(value = "/getall/testcb")
+    public ResponseEntity getAllPatientsTestCB() throws TimeoutException {
+        return ResponseEntity.ok(patientService.getAllPatientsTestCircuitBreaker());
+    }
 
 }

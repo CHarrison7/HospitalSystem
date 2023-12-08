@@ -3,18 +3,26 @@ package com.ehealth.patientservice.service;
 import com.ehealth.patientservice.data.MedicationAdministrationRepository;
 import com.ehealth.patientservice.data.PatientRepository;
 import com.ehealth.patientservice.data.VitalsRepository;
+import com.ehealth.patientservice.event.ServiceAdministeredEvent;
 import com.ehealth.patientservice.model.Invoice;
 import com.ehealth.patientservice.model.MedicationAdministration;
 import com.ehealth.patientservice.model.Patient;
 import com.ehealth.patientservice.model.Vitals;
 import com.ehealth.patientservice.service.client.InvoiceFeignClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 @Service
 public class PatientService {
@@ -32,7 +40,12 @@ public class PatientService {
     private static VitalsRepository vitalsRepository;
 
     @Autowired
+    private KafkaTemplate<String, ServiceAdministeredEvent> ServiceAdministeredKafkaTemplate;
+
+    @Autowired
     InvoiceFeignClient invoiceFeignClient;
+
+    private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
 
 
     public PatientService(PatientRepository patientRepo, MedicationAdministrationService medicationAdministrationService, VitalsService vitalsService,
@@ -44,9 +57,12 @@ public class PatientService {
         this.vitalsRepository =  vitalsRepository;
     }
 
+
+
     public List<Patient> getAllPatients() {
         return patientRepo.findAll();
     }
+
 
     public Patient createPatient(Patient patient)  {
         patientRepo.save(patient);
@@ -99,8 +115,15 @@ public class PatientService {
         List<MedicationAdministration> ret  = patient.addMedicationAdministrationToPatient(medAdmin);
         patientRepo.save(patient);
 
-        Invoice invoice = invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
-        System.out.println(invoice.toString());
+        //Invoice invoice = invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
+
+        ServiceAdministeredEvent serviceAdministeredEvent = new ServiceAdministeredEvent();
+        serviceAdministeredEvent.setPatientId(patientId);
+        serviceAdministeredEvent.setServiceCost(100);
+        serviceAdministeredEvent.setServiceDescription("Medicine: " + medAdmin.getMedication() + " ; dosage: " + medAdmin.getDosage());
+
+        ServiceAdministeredKafkaTemplate.send("serviceAdministeredTopic", serviceAdministeredEvent);
+
 
         //invoiceFeignClient.updateInvoiceToAddServiceAndCost(patient.getId());
 
@@ -133,6 +156,41 @@ public class PatientService {
         patient.getVitalsList().remove(vitals);
         patientRepo.save(patient);
         return "Vitals with vitalsId " + vitalsId + " deleted from Patient with patientId " + patientId + "!";
+    }
+
+
+
+
+    @CircuitBreaker(name = "getAllPatientsTestCircuitBreaker", fallbackMethod = "getAllPatientsTestCircuitBreakerFALLBACK")
+    public List<Patient> getAllPatientsTestCircuitBreaker() throws TimeoutException {
+        randomlyRunLong();
+        return patientRepo.findAll();
+    }
+
+    private List<Patient> getAllPatientsTestCircuitBreakerFALLBACK(Throwable t) {
+        System.out.println("IN FALLBACK");
+        Patient p = new Patient();
+        p.setId(0L);
+        p.setFirstName("Service");
+        p.setLastName("Unavailable");
+        List<Patient> lp = new ArrayList<>();
+        lp.add(p);
+        return lp;
+    }
+
+
+    private void randomlyRunLong(){
+        System.out.println("RANDOMLY RUNNING LONG");
+        Random rand = new Random();
+        int randomNum = rand.nextInt(3);
+        if (randomNum % 2 == 0 ) sleep();
+    }
+    private void sleep(){
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+        }
     }
 
 }

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-prod.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: patientdb
+  name: patientdb
+spec:
+  externalName: ehealth-aws.cfoztpqspxhq.us-east-2.rds.amazonaws.com
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    io.kompose.service: patientdb
+status:
+  loadBalancer: {}

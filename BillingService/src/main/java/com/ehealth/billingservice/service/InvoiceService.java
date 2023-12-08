@@ -1,6 +1,7 @@
 package com.ehealth.billingservice.service;
 
 import com.ehealth.billingservice.data.InvoiceRepository;
+import com.ehealth.billingservice.event.ServiceAdministeredEvent;
 import com.ehealth.billingservice.model.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,22 @@ public Invoice getInvoiceByPatientId(Long patientId) {
             }
         }
         return null;
+}
+
+public Long getInvoiceIdByPatientId(Long patientId) {
+    List<Invoice> invoiceList = invoiceRepo.findAll();
+
+    for(int i = 0; i < invoiceList.size(); i++) {
+        if(invoiceList.get(i).getPatientId() == patientId) {
+            return invoiceList.get(i).getId();
+        }
+    }
+    return null;
+}
+
+public void updateInvoiceFromServiceAdministeredEvent(ServiceAdministeredEvent serviceAdministeredEvent) {
+        Long invoiceId = getInvoiceIdByPatientId(serviceAdministeredEvent.getPatientId());
+        updateInvoiceServicesListAndBalance(invoiceId, serviceAdministeredEvent.getServiceDescription(), serviceAdministeredEvent.getServiceCost());
 }
 
 

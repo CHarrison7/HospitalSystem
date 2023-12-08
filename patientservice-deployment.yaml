@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-prod.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: patientservice
+  name: patientservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: patientservice
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-prod.yml
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/hospitalsystem-backend: "true"
+        io.kompose.service: patientservice
+    spec:
+      containers:
+        - env:
+            - name: CONFIGSERVER_PORT
+              value: "8888"
+            - name: CONFIGSERVER_URI
+              value: http://configserver:8888/
+            - name: DATABASESERVER_PORT
+              value: "5432"
+            - name: ENCRYPT_KEY
+              value: IMSYMMETRIC
+            - name: PATIENTSERVICE_PORT
+              value: "8081"
+            - name: PROFILE
+              value: prod
+          image: ehealth/patientservice
+          name: patientservice
+          ports:
+            - containerPort: 8081
+              hostPort: 8081
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-prod.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: billingservice
+  name: billingservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: billingservice
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-prod.yml
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/hospitalsystem-backend: "true"
+        io.kompose.service: billingservice
+    spec:
+      containers:
+        - env:
+            - name: BILLINGSERVICE_PORT
+              value: "8082"
+            - name: CONFIGSERVER_PORT
+              value: "8888"
+            - name: CONFIGSERVER_URI
+              value: http://configserver:8888/
+            - name: DATABASESERVER_PORT
+              value: "5432"
+            - name: ENCRYPT_KEY
+              value: IMSYMMETRIC
+            - name: PROFILE
+              value: prod
+          image: ehealth/billingservice
+          name: billingservice
+          ports:
+            - containerPort: 8082
+              hostPort: 8082
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
