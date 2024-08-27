@@ -6,10 +6,6 @@
 - added kafka for messaging
 - added serviceAdministeredEvent model for use with Kafka messaging
 - added Zipkin and Micrometer for tracing
-- partial deployment to Amazon AWS...RDS/EKS/ECS created, docker images pushed, but non-functional and wasn't able to demonstrate
-
-* Was unable to get Security to work
-
 
 Config Service GitHub: https://github.com/CHarrison7/configrepo/
 
