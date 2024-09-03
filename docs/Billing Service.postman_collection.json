@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "6982cbfd-aef7-43ec-9eea-0045eec443f7",
+		"name": "Billing Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25817545",
+		"_collection_link": "https://martian-space-146115.postman.co/workspace/5347-Project-eHealth~d5840fea-1c96-4a79-8dac-df354e0f2b13/collection/25817545-6982cbfd-aef7-43ec-9eea-0045eec443f7?action=share&source=collection_link&creator=25817545"
+	},
+	"item": [
+		{
+			"name": "Get All Invoices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/billingservice/api/invoices/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"billingservice",
+						"api",
+						"invoices",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Invoice By Patient Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/billingservice/api/invoices/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"billingservice",
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gateway Routes",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
