@@ -1,5 +1,8 @@
 # HospitalSystem
 
+This was a project for a graduate Distributed Systems course. In the docs directory, you can find a couple of rough models describing the system at a high level.
+
+
 # Checkpoint 3:
 
 - added api gateway
