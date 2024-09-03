@@ -1,0 +1,440 @@
+{
+	"info": {
+		"_postman_id": "15119e42-3af4-491b-84ee-6b5e5bfc426f",
+		"name": "Patient Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25817545",
+		"_collection_link": "https://martian-space-146115.postman.co/workspace/5347-Project-eHealth~d5840fea-1c96-4a79-8dac-df354e0f2b13/collection/25817545-15119e42-3af4-491b-84ee-6b5e5bfc426f?action=share&source=collection_link&creator=25817545"
+	},
+	"item": [
+		{
+			"name": "Get All Patients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Mike\",\r\n    \"lastName\": \"Peterson\",\r\n    \"dob\": \"1999-10-08\",\r\n    \"phoneNumber\": \"254-789-8808\",\r\n    \"knownConditions\":\r\n    [\r\n        \"gastritis\"\r\n    ],\r\n    \"prescribedMedications\": [\"morphine\"],\r\n    \"regularMedications\": [\"advil\"],\r\n    \"allergies\": [],\r\n    \"pastProcedures\": [\"appendectomy\"],\r\n    \"diagnosis\": [\"kidney stone\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Patient",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Mike\",\r\n    \"lastName\": \"Peterson\",\r\n    \"dob\": \"1999-10-08\",\r\n    \"phoneNumber\": \"254-789-8808\",\r\n    \"knownConditions\":\r\n    [\r\n        \"gastritis\"\r\n    ],\r\n    \"prescribedMedications\": [\"morphine\"],\r\n    \"regularMedications\": [\"tylenol\"],\r\n    \"allergies\": [\"advil\", \"spring\"],\r\n    \"pastProcedures\": [\"appendectomy\"],\r\n    \"diagnosis\": [\"kidney stone\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/patients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"patients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Patient",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create & Add Vitals to Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bloodPressure\": \"100/70\",\n    \"heartRate\": \"70\",\n    \"oxygenSaturation\": \"97\",\n    \"painLevel\": \"7\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients/addvitals/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients",
+						"addvitals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create & add Medication Administration to Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"patientId\": \"1\",\n    \"medication\": \"zofran\",\n    \"dosage\":  \"5mg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients/addmedicationadministration/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients",
+						"addmedicationadministration",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Medication Administrations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/medicationadministration/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"medicationadministration",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Medication Administrations By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/medicationadministration/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"medicationadministration",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update MedicationAdministration",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"patientId\": \"1\",\n    \"medication\": \"morphine\",\n    \"dosage\":  \"2mg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/medicationadministration/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"medicationadministration",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete MedicationAdministration",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/medicationadministration/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"medicationadministration",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Vitals",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/vitals/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"vitals",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Vitals By VitalsId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/vitals/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"vitals",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Vitals",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"bloodPressure\": \"105/75\",\n    \"heartRate\": \"75\",\n    \"oxygenSaturation\": \"96\",\n    \"painLevel\": \"9\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/vitals/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"vitals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Vitals",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/vitals/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"vitals",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Circuitbreaker",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8072/patientservice/api/patients/getall/testcb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8072",
+					"path": [
+						"patientservice",
+						"api",
+						"patients",
+						"getall",
+						"testcb"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://patientservice:8081"
+		}
+	]
+}
